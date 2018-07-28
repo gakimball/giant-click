@@ -4,7 +4,10 @@
   "description": "Entry for Giant ROM 5 game jam",
   "main": "index.js",
   "scripts": {
-    "dev": "next dev"
+    "build": "next build",
+    "dev": "next",
+    "export": "next export",
+    "start": "next start"
   },
   "repository": {
     "type": "git",

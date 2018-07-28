@@ -1,0 +1,10 @@
+*
+!components
+!pages
+!stores
+!utils
+!.babelrc
+!LICENSE
+!package-lock.json
+!package.json
+!README.md
