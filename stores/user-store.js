@@ -3,6 +3,7 @@ import randomFirstname from 'random-firstname';
 import groupBy from 'lodash/groupBy';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
+import randomCity from 'random-city-from-list';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES} from '../utils/constants';
 
 const SUBSCRIBER_VALUE = 5;
@@ -10,6 +11,8 @@ const SUBSCRIBER_VALUE = 5;
 export default class UserStore {
   constructor(state) {
     extendObservable(this, state);
+
+    this.createGame();
   }
 
   serialize() {
@@ -18,6 +21,14 @@ export default class UserStore {
 
   deserialize() {
     // @TODO
+  }
+
+  @action.bound createGame() {
+    this.exists = true;
+    this.name = 'Geoff';
+    this.website = 'grantclick.biz';
+    const office = this.addOffice(0);
+    this.addPerson(office.location, {isPlayer: true});
   }
 
   /**
@@ -37,7 +48,7 @@ export default class UserStore {
   @observable website = ''
 
   // Cash on hand
-  @observable money = 100000
+  @observable money = 0
 
   // Total audience
   @observable audience = 0
@@ -83,7 +94,10 @@ export default class UserStore {
 
   // Content produced automatically every second
   @computed get throughput() {
-    return this.people.reduce((count, person) => count + person.level, 0);
+    return this.people.reduce(
+      (count, person) => person.isPlayer ? count : (count + person.level),
+      0,
+    );
   }
 
   // Money made every second
@@ -134,16 +148,21 @@ export default class UserStore {
    * -------
    */
 
-  @action.bound buyOffice(level, location) {
+  @action addOffice(level) {
+    this.offices.push({
+      level,
+      location: randomCity.random().city
+    });
+
+    return this.offices[this.offices.length - 1];
+  }
+
+  @action.bound buyOffice(level) {
     const cost = this.getCostToBuild(level);
 
     if (this.canAfford(cost)) {
       this.removeMoney(cost);
-
-      this.offices.push({
-        level,
-        location
-      });
+      this.addOffice(level);
     }
   }
 
@@ -191,10 +210,31 @@ export default class UserStore {
     return this.getEmptyBuildingSlots(location) > 0;
   }
 
+  @computed get buildingUsage() {
+    const totalSize = this.offices.reduce(
+      (total, office) => total + BUILDING_CAPACITIES[office.level],
+      0,
+    );
+
+    return this.people.length / totalSize;
+  }
+
   /**
    * People
    * ------
    */
+
+  @action addPerson(office, {isPlayer = false} = {}) {
+    this.people.push({
+      id: uuid(),
+      name: isPlayer ? this.name : randomFirstname(),
+      level: 1,
+      output: 0,
+      rare: false,
+      isPlayer,
+      office
+    });
+  }
 
   @action.bound buyPerson(office) {
     if (!this.buildingHasSpace(office)) {
@@ -205,15 +245,7 @@ export default class UserStore {
 
     if (this.canAfford(cost)) {
       this.removeMoney(cost);
-
-      this.people.push({
-        id: uuid(),
-        name: randomFirstname(),
-        level: 1,
-        output: 0,
-        rare: false,
-        office
-      });
+      this.addPerson(office);
     }
   }
 

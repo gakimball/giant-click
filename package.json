@@ -44,6 +44,7 @@
     "mobx-react": "^5.2.3",
     "next": "^6.1.1",
     "prop-types": "^15.6.2",
+    "random-city-from-list": "^1.1.0",
     "random-firstname": "^1.0.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",

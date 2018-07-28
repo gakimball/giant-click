@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {inject} from 'mobx-react';
 import Buildings from '../components/buildings';
+import Upgrades from '../components/upgrades';
 
 const injector = ({user}) => ({
   money: user.money,
@@ -9,10 +10,11 @@ const injector = ({user}) => ({
   subscribers: user.subscribers,
   throughput: user.throughput,
   earningRate: user.earningRate,
-  click: () => user.click()
+  click: () => user.click(),
+  buildingUsage: user.buildingUsage
 });
 
-const Index = ({money, audience, subscribers, throughput, earningRate, click}) => (
+const Index = ({money, audience, subscribers, throughput, earningRate, click, buildingUsage}) => (
   <div className="container">
     <div className="row">
       <div className="col">
@@ -21,10 +23,12 @@ const Index = ({money, audience, subscribers, throughput, earningRate, click}) =
         <p><strong>Audience:</strong> {audience}</p>
         <p><strong>Subscribers:</strong> {subscribers}</p>
         <p><strong>Throughput:</strong> {throughput}</p>
+        <p><strong>Office Usage:</strong> {Math.ceil(buildingUsage * 100)}%</p>
         <button className="btn btn-primary" type="button" onClick={click}>
           #content
         </button>
         <Buildings/>
+        <Upgrades/>
       </div>
     </div>
   </div>
@@ -36,7 +40,8 @@ Index.propTypes = {
   audience: PropTypes.number.isRequired,
   subscribers: PropTypes.number.isRequired,
   throughput: PropTypes.number.isRequired,
-  click: PropTypes.func.isRequired
+  click: PropTypes.func.isRequired,
+  buildingUsage: PropTypes.number.isRequired
 };
 
 export default inject(injector)(Index);

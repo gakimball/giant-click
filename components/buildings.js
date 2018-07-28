@@ -46,7 +46,7 @@ const Buildings = ({offices, peopleGroups, buyOffice, buyPerson, promotePerson, 
         </ul>
       </div>
     ))}
-    <button className="btn btn-primary" type="button" onClick={() => buyOffice(1, Date.now().toString())}>
+    <button className="btn btn-primary" type="button" onClick={() => buyOffice(1)}>
       New Office (${getCostToBuild(1).toLocaleString()})
     </button>
   </div>
