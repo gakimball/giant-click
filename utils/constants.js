@@ -141,3 +141,5 @@ export const PEOPLE_RANKS = [
   'Executive Sr. VP of Producing',
   'Immortal VP of Producing'
 ];
+
+export const AD_RATE = [10000, 5000, 2500, 1000, 500, 250, 100, 50, 25, 1];

@@ -1,5 +1,5 @@
-export const AdTeamUpgrade = Symbol('AdTeamUpgrade');
-export const Recruiter = Symbol('Recruiter');
+export const AdTeamUpgrade = 'AdTeamUpgrade';
+export const Recruiter = 'Recruiter';
 
 export default {
   [AdTeamUpgrade]: {

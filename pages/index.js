@@ -8,6 +8,8 @@ import Upgrades from '../components/upgrades';
 const Index = ({game}) => (
   <div className="container">
     <Statistics/>
+    <hr/>
+    <br/>
     <div className="row">
       <div className="col col-lg-6">
         <Buildings/>

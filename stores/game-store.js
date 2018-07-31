@@ -1,9 +1,11 @@
 import {observable, computed, action, extendObservable, toJS} from 'mobx';
 import randomFirstname from 'random-firstname';
 import groupBy from 'lodash/groupBy';
+import mapValues from 'lodash/mapValues';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
-import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS} from '../utils/constants';
+import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
+import upgrades, {AdTeamUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -68,11 +70,10 @@ export default class UserStore {
   // Employees
   @observable people = []
 
-  // Special effects
-  @observable auras = []
-
   // Age of save in seconds (in-game days)
   @observable age = 0
+
+  @observable upgrades = mapValues(upgrades, () => 0)
 
   // Last tick (used to calculate delta when user returns to game after a period of time)
   lastTick = Date.now()
@@ -100,9 +101,25 @@ export default class UserStore {
     );
   }
 
+  @computed get subscriberRevenue() {
+    return this.subscribers * SUBSCRIBER_VALUE;
+  }
+
+  @computed get advertisingRevenue() {
+    const rank = this.upgrades[AdTeamUpgrade];
+
+    if (rank < 0) {
+      return 0;
+    }
+
+    const nonPayingAudience = this.audience - this.subscribers;
+
+    return Math.floor(nonPayingAudience / AD_RATE[rank]);
+  }
+
   // Money made every second
   @computed get earningRate() {
-    return this.subscribers * SUBSCRIBER_VALUE;
+    return this.subscriberRevenue + this.advertisingRevenue;
   }
 
   /**
