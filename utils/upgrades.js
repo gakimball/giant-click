@@ -6,7 +6,7 @@ export default {
     title: 'Ad Team',
     description: 'Generate revenue from non-subscribers',
     info: rank => `$1 per ${[10000, 5000, 2500, 1000, 500, 250, 100, 50, 25, 1][rank]} users`,
-    cost: 100000
+    cost: 50000
   },
   [Recruiter]: {
     title: 'Recruiter',

@@ -73,7 +73,10 @@ export default class UserStore {
   // Age of save in seconds (in-game days)
   @observable age = 0
 
-  @observable upgrades = mapValues(upgrades, () => 0)
+  // Upgrades
+  // -1 means it hasn't been purchased yet
+  // 0-9 correspond to rank
+  @observable upgrades = mapValues(upgrades, () => -1)
 
   // Last tick (used to calculate delta when user returns to game after a period of time)
   lastTick = Date.now()
@@ -302,6 +305,31 @@ export default class UserStore {
 
   getPeople(office) {
     return this.people.filter(person => person.office === office);
+  }
+
+  /**
+   * Upgrades
+   */
+
+  buyUpgrade(type) {
+    if (!(type in this.upgrades)) {
+      return;
+    }
+
+    const cost = this.getCostToBuyUpgrade(type);
+
+    if (this.canAfford(cost)) {
+      this.removeMoney(cost);
+      this.upgrades[type] += 1;
+    }
+  }
+
+  getCostToBuyUpgrade(type) {
+    if (!(type in this.upgrades)) {
+      return 0;
+    }
+
+    return (this.upgrades[type] + 2) * upgrades[type].cost;
   }
 
   /**
