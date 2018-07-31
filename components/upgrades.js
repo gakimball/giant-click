@@ -2,7 +2,7 @@ import React from 'react';
 import {observer, inject} from 'mobx-react';
 import upgrades from '../utils/upgrades';
 
-const Upgrades = ({user}) => (
+const Upgrades = ({game}) => (
   <div>
     <ul>
       {Object.entries(upgrades).map(([key, upgrade]) => (
@@ -15,4 +15,4 @@ const Upgrades = ({user}) => (
   </div>
 );
 
-export default inject('user')(observer(Upgrades));
+export default inject('game')(observer(Upgrades));

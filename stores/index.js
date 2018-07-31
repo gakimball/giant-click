@@ -1,5 +1,5 @@
-import UserStore from './user-store';
+import GameStore from './game-store';
 
 export default {
-  user: UserStore
+  game: GameStore
 };

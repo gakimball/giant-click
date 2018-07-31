@@ -2,8 +2,8 @@ import {Component} from 'react';
 import PropTypes from 'prop-types';
 import {inject} from 'mobx-react';
 
-const injector = ({user}) => ({
-  tick: () => user.tick()
+const injector = ({game}) => ({
+  tick: () => game.tick()
 });
 
 class Ticker extends Component {

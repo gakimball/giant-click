@@ -4,14 +4,14 @@ import {inject} from 'mobx-react';
 import Buildings from '../components/buildings';
 import Upgrades from '../components/upgrades';
 
-const injector = ({user}) => ({
-  money: user.money,
-  audience: user.audience,
-  subscribers: user.subscribers,
-  throughput: user.throughput,
-  earningRate: user.earningRate,
-  click: () => user.click(),
-  buildingUsage: user.buildingUsage
+const injector = ({game}) => ({
+  money: game.money,
+  audience: game.audience,
+  subscribers: game.subscribers,
+  throughput: game.throughput,
+  earningRate: game.earningRate,
+  click: () => game.click(),
+  buildingUsage: game.buildingUsage
 });
 
 const Index = ({money, audience, subscribers, throughput, earningRate, click, buildingUsage}) => (

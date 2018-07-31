@@ -5,18 +5,18 @@ import {inject} from 'mobx-react';
 import get from 'lodash/get';
 import {BUILDING_NAMES} from '../utils/constants';
 
-const injector = ({user}) => ({
-  offices: toJS(user.offices),
-  peopleGroups: user.peopleByOffice,
-  buyOffice: user.buyOffice,
-  buyPerson: user.buyPerson,
-  promotePerson: user.promotePerson,
-  getCostToPromote: user.getCostToPromote,
-  getCostToBuild: user.getCostToBuild,
-  costToHire: user.costToHire,
-  upgradeOffice: user.upgradeOffice,
-  getCostToUpgrade: user.getCostToUpgrade,
-  getEmptyBuildingSlots: user.getEmptyBuildingSlots
+const injector = ({game}) => ({
+  offices: toJS(game.offices),
+  peopleGroups: game.peopleByOffice,
+  buyOffice: game.buyOffice,
+  buyPerson: game.buyPerson,
+  promotePerson: game.promotePerson,
+  getCostToPromote: game.getCostToPromote,
+  getCostToBuild: game.getCostToBuild,
+  costToHire: game.costToHire,
+  upgradeOffice: game.upgradeOffice,
+  getCostToUpgrade: game.getCostToUpgrade,
+  getEmptyBuildingSlots: game.getEmptyBuildingSlots
 });
 
 const Buildings = ({offices, peopleGroups, buyOffice, buyPerson, promotePerson, getCostToPromote, getCostToBuild, costToHire, upgradeOffice, getCostToUpgrade, getEmptyBuildingSlots}) => (
