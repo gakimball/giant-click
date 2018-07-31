@@ -8,11 +8,17 @@ import Upgrades from '../components/upgrades';
 const Index = ({game}) => (
   <div className="container">
     <Statistics/>
-    <button className="btn btn-primary" type="button" onClick={game.click}>
-      #content
-    </button>
-    <Buildings/>
-    <Upgrades/>
+    <div className="row">
+      <div className="col col-lg-6">
+        <Buildings/>
+      </div>
+      <div className="col col-lg-6">
+        <button className="btn btn-primary" type="button" onClick={game.click}>
+          #content
+        </button>
+        <Upgrades/>
+      </div>
+    </div>
   </div>
 );
 

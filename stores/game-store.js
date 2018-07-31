@@ -3,8 +3,7 @@ import randomFirstname from 'random-firstname';
 import groupBy from 'lodash/groupBy';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
-import randomCity from 'random-city-from-list';
-import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES} from '../utils/constants';
+import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS} from '../utils/constants';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -27,6 +26,7 @@ export default class UserStore {
     this.exists = true;
     this.name = 'Geoff';
     this.website = 'grantclick.biz';
+    this.money = 100000;
     const office = this.addOffice(0);
     this.addPerson(office.location, {isPlayer: true});
   }
@@ -151,7 +151,7 @@ export default class UserStore {
   @action addOffice(level) {
     this.offices.push({
       level,
-      location: randomCity.random().city
+      location: BUILDING_LOCATIONS[this.offices.length]
     });
 
     return this.offices[this.offices.length - 1];

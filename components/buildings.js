@@ -1,69 +1,82 @@
-import React from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {toJS} from 'mobx';
-import {inject} from 'mobx-react';
+import {inject, observer} from 'mobx-react';
 import get from 'lodash/get';
+import cls from 'classnames';
 import {BUILDING_NAMES} from '../utils/constants';
 
-const injector = ({game}) => ({
-  offices: toJS(game.offices),
-  peopleGroups: game.peopleByOffice,
-  buyOffice: game.buyOffice,
-  buyPerson: game.buyPerson,
-  promotePerson: game.promotePerson,
-  getCostToPromote: game.getCostToPromote,
-  getCostToBuild: game.getCostToBuild,
-  costToHire: game.costToHire,
-  upgradeOffice: game.upgradeOffice,
-  getCostToUpgrade: game.getCostToUpgrade,
-  getEmptyBuildingSlots: game.getEmptyBuildingSlots
-});
+class Buildings extends Component {
+  state = {
+    selectedOffice: this.props.game.offices[0].location
+  }
 
-const Buildings = ({offices, peopleGroups, buyOffice, buyPerson, promotePerson, getCostToPromote, getCostToBuild, costToHire, upgradeOffice, getCostToUpgrade, getEmptyBuildingSlots}) => (
-  <div>
-    <p><strong>Offices:</strong></p>
-    {offices.map(office => (
-      <div key={office.location}>
-        <p><strong>{office.location}</strong> ({BUILDING_NAMES[office.level]})</p>
-        <button className="btn btn-secondary btn-sm" type="button" onClick={() => upgradeOffice(office.location)}>
-          Upgrade (${getCostToUpgrade(office.location).toLocaleString()})
-        </button>
-        <ul>
-          {get(peopleGroups, office.location, []).map(person => (
-            <li key={person.name}>
-              <strong>{person.name}</strong> Lv. {person.level}{person.rare && ', rare'}
-              <button className="btn btn-secondary btn-sm" type="button" onClick={() => promotePerson(person.id)}>
-                Promote (${getCostToPromote(person.id).toLocaleString()})
-              </button>
-            </li>
-          ))}
-          <li><em>{getEmptyBuildingSlots(office.location)} slots left</em></li>
-          <li>
-            <button className="btn btn-secondary btn-sm" type="button" onClick={() => buyPerson(office.location)}>
-              New Hire (${costToHire.toLocaleString()})
-            </button>
-          </li>
-        </ul>
+  handleOfficeClick = location => {
+    this.setState({
+      selectedOffice: location
+    });
+  }
+
+  render() {
+    const {game} = this.props;
+    const selectedOffice = game.offices.find(office => office.location === this.state.selectedOffice);
+
+    return (
+      <div>
+        <div className="row">
+          <div className="col col-lg-4">
+            <p className="text-muted text-uppercase"><strong>Offices</strong></p>
+            <a href="#" onClick={() => game.buyOffice(1)}>
+              + New Office (${game.getCostToBuild(1).toLocaleString()})
+            </a>
+            <hr/>
+            {toJS(game.offices).map(office => (
+              <Fragment key={office.location}>
+                <a
+                  className={cls(`text-${office.location === selectedOffice.location ? 'primary' : 'secondary'}`)}
+                  href="#"
+                  onClick={() => this.handleOfficeClick(office.location)}
+                >
+                  {office.location}
+                </a>
+                <br/>
+              </Fragment>
+            ))}
+          </div>
+          <div className="col col-lg-8">
+            <p className="text-muted text-uppercase"><strong>{selectedOffice.location}</strong></p>
+            <a href="#" onClick={() => game.upgradeOffice(selectedOffice.location)}>
+              &uarr; Upgrade to {BUILDING_NAMES[selectedOffice.level + 1]} (${game.getCostToUpgrade(selectedOffice.location).toLocaleString()})
+            </a>
+            <br/>
+            <a href="#" onClick={() => game.buyPerson(selectedOffice.location)}>
+              + New Hire (${game.costToHire.toLocaleString()})
+            </a>
+            <hr/>
+            <ul className="list-unstyled">
+              {get(toJS(game.peopleByOffice), selectedOffice.location, []).map(person => (
+                <li key={person.name}>
+                  <strong>{person.name}</strong> Lv. {person.level}{person.rare && ', rare'}
+                  &nbsp;
+                  <a
+                    href="#"
+                    onClick={() => game.promotePerson(person.id)}
+                  >
+                    Promote (${game.getCostToPromote(person.id).toLocaleString()})
+                  </a>
+                </li>
+              ))}
+              <li><em>{game.getEmptyBuildingSlots(selectedOffice.location)} slots left</em></li>
+            </ul>
+          </div>
+        </div>
       </div>
-    ))}
-    <button className="btn btn-primary" type="button" onClick={() => buyOffice(1)}>
-      New Office (${getCostToBuild(1).toLocaleString()})
-    </button>
-  </div>
-);
+    );
+  }
+}
 
 Buildings.propTypes = {
-  offices: PropTypes.arrayOf(PropTypes.object).isRequired,
-  peopleGroups: PropTypes.object.isRequired,
-  buyOffice: PropTypes.func.isRequired,
-  buyPerson: PropTypes.func.isRequired,
-  promotePerson: PropTypes.func.isRequired,
-  getCostToPromote: PropTypes.func.isRequired,
-  getCostToBuild: PropTypes.func.isRequired,
-  costToHire: PropTypes.number.isRequired,
-  upgradeOffice: PropTypes.func.isRequired,
-  getCostToUpgrade: PropTypes.func.isRequired,
-  getEmptyBuildingSlots: PropTypes.func.isRequired
+  game: PropTypes.object.isRequired
 };
 
-export default inject(injector)(Buildings);
+export default inject('game')(observer(Buildings));
