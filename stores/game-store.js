@@ -326,7 +326,7 @@ export default class UserStore {
    */
 
   // Generate subscribers and revenue based on player throughput
-  @action click() {
+  @action.bound click() {
     const {userThroughput} = this;
 
     // Content creates audience
