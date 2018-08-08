@@ -3,6 +3,7 @@ export const Recruiter = 'Recruiter';
 export const LawyerUpgrade = 'LawyerUpgrade';
 export const MarketerUpgrade = 'MarketerUpgrade';
 export const MentalQuicknessUpgrade = 'MentalQuicknessUpgrade';
+export const CloningUpgrade = 'CloningUpgrade';
 
 export default {
   [AdTeamUpgrade]: {
@@ -27,6 +28,12 @@ export default {
     title: 'Mental Quickness',
     description: 'Produce more content per click',
     info: rank => `+${rank + 1} content produced`,
+    cost: 1
+  },
+  [CloningUpgrade]: {
+    title: 'Cloning',
+    description: 'Perform extra clicks per physical click',
+    info: rank => `+${rank + 1} extra clicks`,
     cost: 1
   },
   // Not yet implemented

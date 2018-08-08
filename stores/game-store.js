@@ -2,10 +2,11 @@ import {observable, computed, action, extendObservable, toJS} from 'mobx';
 import randomFirstname from 'random-firstname';
 import groupBy from 'lodash/groupBy';
 import mapValues from 'lodash/mapValues';
+import times from 'lodash/times';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
-import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade, MentalQuicknessUpgrade} from '../utils/upgrades';
+import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade, MentalQuicknessUpgrade, CloningUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -95,6 +96,13 @@ export default class UserStore {
     const rank = this.upgrades[MentalQuicknessUpgrade];
 
     // Base rank is -1, so the default throughput is 1
+    return 2 + rank;
+  }
+
+  @computed get userClickRate() {
+    const rank = this.upgrades[CloningUpgrade];
+
+    // Base rank is -1, so the default click count is 1
     return 2 + rank;
   }
 
@@ -384,8 +392,10 @@ export default class UserStore {
   @action.bound click() {
     const {userThroughput} = this;
 
-    // Content creates audience
-    this.addAudience(userThroughput);
-    this.addSubscribers(userThroughput);
+    times(this.userClickRate, () => {
+      // Content creates audience
+      this.addAudience(userThroughput);
+      this.addSubscribers(userThroughput);
+    });
   }
 }
