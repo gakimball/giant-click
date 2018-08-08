@@ -4,6 +4,7 @@ export const LawyerUpgrade = 'LawyerUpgrade';
 export const MarketerUpgrade = 'MarketerUpgrade';
 export const MentalQuicknessUpgrade = 'MentalQuicknessUpgrade';
 export const CloningUpgrade = 'CloningUpgrade';
+export const StrengthInNumbersUpgrade = 'StrengthInNumbersUpgrade';
 
 export default {
   [AdTeamUpgrade]: {
@@ -34,6 +35,12 @@ export default {
     title: 'Cloning',
     description: 'Perform extra clicks per physical click',
     info: rank => `+${rank + 1} extra clicks`,
+    cost: 1
+  },
+  [StrengthInNumbersUpgrade]: {
+    title: 'Strength in Numbers',
+    description: 'Increase your throughput based on the number of employees you have',
+    info: rank => `+1 throughput per ${[10000, 5000, 2500, 1000, 500, 250, 100, 50, 25, 1][rank]} employees`,
     cost: 1
   },
   // Not yet implemented

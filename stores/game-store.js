@@ -6,7 +6,7 @@ import times from 'lodash/times';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
-import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade, MentalQuicknessUpgrade, CloningUpgrade} from '../utils/upgrades';
+import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade, MentalQuicknessUpgrade, CloningUpgrade, StrengthInNumbersUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -93,17 +93,19 @@ export default class UserStore {
 
   // Content produced per user click
   @computed get userThroughput() {
-    const rank = this.upgrades[MentalQuicknessUpgrade];
+    const mentalQuicknessBonus = this.upgrades[MentalQuicknessUpgrade] + 1;
+    const strengthRank = this.upgrades[StrengthInNumbersUpgrade];
+    const strengthBonus = strengthRank > -1 ?
+      Math.floor((this.people.length - 1) / AD_RATE[strengthRank]) :
+      0;
 
-    // Base rank is -1, so the default throughput is 1
-    return 2 + rank;
+    return 1 + mentalQuicknessBonus + strengthBonus;
   }
 
   @computed get userClickRate() {
-    const rank = this.upgrades[CloningUpgrade];
+    const rank = this.upgrades[CloningUpgrade] + 1;
 
-    // Base rank is -1, so the default click count is 1
-    return 2 + rank;
+    return 1 + rank;
   }
 
   // Percentage of paid subscribers
