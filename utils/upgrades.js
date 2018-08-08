@@ -1,6 +1,7 @@
 export const AdTeamUpgrade = 'AdTeamUpgrade';
 export const Recruiter = 'Recruiter';
 export const LawyerUpgrade = 'LawyerUpgrade';
+export const MarketerUpgrade = 'MarketerUpgrade';
 
 export default {
   [AdTeamUpgrade]: {
@@ -10,9 +11,15 @@ export default {
     cost: 50000
   },
   [LawyerUpgrade]: {
-    title: 'Lawyer',
+    title: 'Lawyers',
     description: 'Reduce the cost of buying and upgrading buildings',
     info: rank => `${rank + 1}% discount`,
+    cost: 1000000
+  },
+  [MarketerUpgrade]: {
+    title: 'Marketers',
+    description: 'Increase conversion rate for non-subscribers',
+    info: rank => `${2.5 * (rank + 1)} percentage point increase`,
     cost: 1
   },
   // Not yet implemented

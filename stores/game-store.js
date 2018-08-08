@@ -5,7 +5,7 @@ import mapValues from 'lodash/mapValues';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
-import upgrades, {AdTeamUpgrade, LawyerUpgrade} from '../utils/upgrades';
+import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -59,7 +59,11 @@ export default class UserStore {
   @observable subscribers = 0
 
   // Change a new audience member will subscribe
-  @observable subscriberOdds = 0.5
+  @computed get subscriberOdds() {
+    const rank = this.upgrades[MarketerUpgrade];
+
+    return 0.5 + (0.025 * (rank + 1));
+  }
 
   // Lifetime stats
   @observable lifetimeProduction = 0
