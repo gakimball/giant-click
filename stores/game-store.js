@@ -5,7 +5,7 @@ import mapValues from 'lodash/mapValues';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
-import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade} from '../utils/upgrades';
+import upgrades, {AdTeamUpgrade, LawyerUpgrade, MarketerUpgrade, MentalQuicknessUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -92,7 +92,10 @@ export default class UserStore {
 
   // Content produced per user click
   @computed get userThroughput() {
-    return 1;
+    const rank = this.upgrades[MentalQuicknessUpgrade];
+
+    // Base rank is -1, so the default throughput is 1
+    return 2 + rank;
   }
 
   // Percentage of paid subscribers

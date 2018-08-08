@@ -2,6 +2,7 @@ export const AdTeamUpgrade = 'AdTeamUpgrade';
 export const Recruiter = 'Recruiter';
 export const LawyerUpgrade = 'LawyerUpgrade';
 export const MarketerUpgrade = 'MarketerUpgrade';
+export const MentalQuicknessUpgrade = 'MentalQuicknessUpgrade';
 
 export default {
   [AdTeamUpgrade]: {
@@ -20,6 +21,12 @@ export default {
     title: 'Marketers',
     description: 'Increase conversion rate for non-subscribers',
     info: rank => `${2.5 * (rank + 1)} percentage point increase`,
+    cost: 1
+  },
+  [MentalQuicknessUpgrade]: {
+    title: 'Mental Quickness',
+    description: 'Produce more content per click',
+    info: rank => `+${rank + 1} content produced`,
     cost: 1
   },
   // Not yet implemented
