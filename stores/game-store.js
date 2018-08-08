@@ -5,7 +5,7 @@ import mapValues from 'lodash/mapValues';
 import uuid from 'uuid/v4';
 import {bind} from 'decko';
 import {BUILDING_COST, PEOPLE_COST, PEOPLE_PROMOTION_COST, BUILDING_CAPACITIES, BUILDING_LOCATIONS, AD_RATE} from '../utils/constants';
-import upgrades, {AdTeamUpgrade} from '../utils/upgrades';
+import upgrades, {AdTeamUpgrade, LawyerUpgrade} from '../utils/upgrades';
 
 const SUBSCRIBER_VALUE = 5;
 
@@ -187,7 +187,10 @@ export default class UserStore {
   }
 
   @bind getCostToBuild(level) {
-    return BUILDING_COST * level;
+    const rank = this.upgrades[LawyerUpgrade];
+    const costModifier = 1 - (0.01 * (rank + 1));
+
+    return Math.floor(BUILDING_COST * level * costModifier);
   }
 
   @action.bound upgradeOffice(location) {

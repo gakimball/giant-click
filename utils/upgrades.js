@@ -1,5 +1,6 @@
 export const AdTeamUpgrade = 'AdTeamUpgrade';
 export const Recruiter = 'Recruiter';
+export const LawyerUpgrade = 'LawyerUpgrade';
 
 export default {
   [AdTeamUpgrade]: {
@@ -8,6 +9,13 @@ export default {
     info: rank => `$1 per ${[10000, 5000, 2500, 1000, 500, 250, 100, 50, 25, 1][rank]} users`,
     cost: 50000
   },
+  [LawyerUpgrade]: {
+    title: 'Lawyer',
+    description: 'Reduce the cost of buying and upgrading buildings',
+    info: rank => `${rank + 1}% discount`,
+    cost: 1
+  },
+  // Not yet implemented
   [Recruiter]: {
     title: 'Recruiter',
     description: 'Automatically add new staff to offices when money is available',
