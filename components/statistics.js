@@ -8,7 +8,7 @@ const Statistics = ({game}) => (
     <div className="col col-lg-3">
       <p className="text-muted text-lowercase">Money</p>
       <Tooltip text="Make this number as high as possible.">
-        <p className="display-4">${game.money.toLocaleString()}</p>
+        <p className="display-4">${game.formattedMoney}</p>
       </Tooltip>
     </div>
     <div className="col col-lg-3">

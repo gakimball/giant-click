@@ -53,6 +53,22 @@ export default class UserStore {
   // Cash on hand
   @observable money = 0
 
+  @computed get formattedMoney() {
+    const {money} = this;
+    const billion = 1000000000;
+    const million = 1000000;
+
+    if (money >= billion) {
+      return (money / billion).toFixed(4) + 'B';
+    }
+
+    if (money >= million) {
+      return (money / money).toFixed(4) + 'M';
+    }
+
+    return money.toLocaleString();
+  }
+
   // Total audience
   @observable audience = 0
 
