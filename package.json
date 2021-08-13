@@ -46,7 +46,7 @@
     "lodash": "^4.17.10",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
-    "next": "^6.1.1",
+    "next": "^11.1.0",
     "prop-types": "^15.6.2",
     "random-firstname": "^1.0.1",
     "react": "^16.4.1",
